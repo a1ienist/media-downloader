@@ -1,28 +1,3 @@
-// import fs from 'fs';
-// import ytdl from 'ytdl-core';
-
-// const videoFileName = 'video.mp4';
-
-// export async function downloadVideo(url) {
-//   try {
-//     const info = ytdl.getInfo(url);
-//     const format = info.formats.find(f => f.container === 'mp4' && f.qualityLabel === '720p');
-
-//     if (!format) {
-//       console.error('Desired format not found.');
-//       return;
-//     }
-
-//     const writeStream = fs.createWriteStream(videoFileName);
-//     const stream = ytdl(url, { format });
-
-//     stream.on('error', error => console.error('Download error:', error));
-//     stream.pipe(writeStream).on('finish', () => console.log('Download complete!'));
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// }
-
 import fs from 'fs';
 import ytdl from 'ytdl-core';
 
@@ -62,6 +37,3 @@ export async function downloadVideo(url) {
     }
   });
 }
-
-// const url = "https://www.youtube.com/watch?v=7fmW9faGDDI";
-// downloadVideo(url);

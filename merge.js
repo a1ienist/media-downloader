@@ -1,21 +1,38 @@
 import ffmpeg from 'fluent-ffmpeg';
-
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 export async function mergeVideo() {
-  ffmpeg()
-  .input('audio.webm')
-  .input('video.mp4')
-  .videoCodec('libx265') // Use more efficient H.265 codec
-  .videoBitrate(1000) // Adjust bitrate for desired quality vs. size
-  .audioCodec('aac')
-  .audioBitrate(128) // Adjust audio bitrate as needed
-  .outputOptions([
-    '-preset veryfast', // Speed up encoding for smaller files
-    '-crf 23' // Target a good quality-to-size ratio (adjust as needed)
-  ])
-  .on('end', () => console.log('Merging complete!'))
-  .on('error', (err) => console.error('Error:', err))
-  .save('merged_video.mp4');
+  return new Promise((resolve, reject) => {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
 
+    const outputPath = path.join(__dirname, 'public', 'merged_video.mp4');
+
+    try {
+      ffmpeg()
+        .input(path.join(__dirname, 'audio.webm'))
+        .input(path.join(__dirname, 'video.mp4'))
+        .videoCodec('libx265')
+        .videoBitrate(1000)
+        .audioCodec('aac')
+        .audioBitrate(128)
+        .outputOptions([
+          '-preset veryfast',
+          '-crf 23'
+        ])
+        .on('end', () => {
+          console.log('Merging complete!');
+          resolve();
+        })
+        .on('error', (err) => {
+          console.error('Error:', err);
+          reject(err); 
+        })
+        .save(outputPath);
+    } catch (error) {
+      console.error('Error:', error);
+      reject(error);
+    }
+  });
 }
-  
