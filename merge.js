@@ -1,7 +1,8 @@
 import ffmpeg from 'fluent-ffmpeg';
-const outputFile = 'merged_video.mp4'; // Use MP4 for better compression
 
-ffmpeg()
+
+export async function mergeVideo() {
+  ffmpeg()
   .input('audio.webm')
   .input('video.mp4')
   .videoCodec('libx265') // Use more efficient H.265 codec
@@ -14,4 +15,7 @@ ffmpeg()
   ])
   .on('end', () => console.log('Merging complete!'))
   .on('error', (err) => console.error('Error:', err))
-  .save(outputFile);
+  .save('merged_video.mp4');
+
+}
+  
